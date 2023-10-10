@@ -1,34 +1,142 @@
 // eslint-disable-next-line no-unused-vars
-import React from "react";
+import React, { useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
-	faSquarePlus,
 	faPenToSquare,
-	faSquareMinus,
+	faTrash,
+	faChevronDown,
+	faPlus,
+	faCircleChevronRight,
 } from "@fortawesome/free-solid-svg-icons";
-
-const iconStyle = "cursor-pointer text-3xl p-2 text-slate-900";
-
+/**@param {{skills: array, setSkills: function}} props*/
 export default function Skills({ skills, setSkills }) {
-	const handleSkills = (e) => {
-		setSkills(e.target.value);
+	const [openSkills, setOpenSkills] = useState(false);
+	const [addingSkill, setAddingSkill] = useState(false);
+	const [newSkill, setNewSkill] = useState("");
+
+	const removeSkill = (index) => {
+		return () => {
+			setSkills(skills.slice(0, index).concat(skills.slice(index + 1)));
+		};
 	};
+
+	const editSkill = (index) => {
+		return (e) => {
+			skills[index] = e.target.value;
+			setSkills([...skills]);
+		};
+	};
+
+	const getSkill = (e) => {
+		setNewSkill(e.target.value);
+	};
+
+	const addSkill = () => {
+		if (newSkill !== "") skills.push(newSkill);
+		setNewSkill("");
+		setAddingSkill(false);
+	};
+
+	const toggleAddingSkill = () => {
+		setAddingSkill(!addingSkill);
+	};
+
+	const toggleSkills = () => {
+		setOpenSkills(!openSkills);
+	};
+
 	return (
-		<div className="mt-3 flex justify-evenly items-center">
-            <h1>Skills</h1>
-			<div>
-				<input
-					type="text"
-					value={""}
-					onChange={handleSkills}
-					className="border-2 border-slate-500 px-3 py-2"
+		<div className="p-4">
+			<div className=" w-full bg-slate-900 text-white px-5 py-3 font-bold text-2xl flex justify-between items-center mb-3">
+				<h1
+					className={`${openSkills ? "text-yellow-400" : ""} transition-colors`}
+				>
+					Skills
+				</h1>
+				<FontAwesomeIcon
+					icon={faChevronDown}
+					className={`cursor-pointer ${
+						openSkills ? "rotate-[-90deg] text-yellow-400" : ""
+					} transition-all`}
+					onClick={toggleSkills}
 				/>
 			</div>
-			<div>
-				<FontAwesomeIcon icon={faSquarePlus} className={`${iconStyle} hover:text-green-800`} />
-				<FontAwesomeIcon icon={faSquareMinus} className={`${iconStyle} hover:text-red-800`} /> 
-                <FontAwesomeIcon icon={faPenToSquare} className={`${iconStyle} hover:text-blue-500`}  />
+			<div
+				className={`${
+					openSkills ? "max-h-[400px]" : "max-h-[0]"
+				} transition-[max-height] duration-500 ease-in-out overflow-hidden`}
+			>
+				<div className="flex flex-wrap gap-2">
+					{skills.map((skill, index) => {
+						return (
+							<Skill
+								key={index}
+								skill={skill}
+								removeSkill={removeSkill(index)}
+								editSkill={editSkill(index)}
+							/>
+						);
+					})}
+				</div>
+				<div className="flex justify-center">
+					{addingSkill && (
+						<div className="mt-3 bg-slate-200 rounded-sm flex justify-center items-center px-3 py-1 border-[1px] border-slate-300">
+							<input
+								type="text"
+								className="w-60 h-8 focus:border-[1px] focus:border-blue-500 outline-none bg-slate-200 text-lg px-2 py-2"
+								value={newSkill}
+								onChange={getSkill}
+							/>
+							<FontAwesomeIcon
+								icon={faCircleChevronRight}
+								className="cursor-pointer w-10 hover:text-green-500 "
+								onClick={addSkill}
+							/>
+						</div>
+					)}
+				</div>
+				<div className="flex justify-center items-center p-2">
+					<div
+						className="flex justify-around items-center w-10 h-10 border-2 border-gray-700 text-gray-700 rounded-full p-1 cursor-pointer hover:bg-green-300 transition-all "
+						onClick={toggleAddingSkill}
+					>
+						<FontAwesomeIcon icon={faPlus} />
+					</div>
+				</div>
 			</div>
+		</div>
+	);
+}
+
+function Skill({ skill, removeSkill, editSkill }) {
+	const [editing, setEditing] = useState(false);
+
+	const toggleEdit = () => {
+		setEditing(!editing);
+	};
+
+	return (
+		<div className="flex justify-center items-center gap-2 h-10 w-auto	p-3 border-[1px] border-slate-300 cursor-pointer bg-slate-200">
+			{!editing ? (
+				<h1>{skill}</h1>
+			) : (
+				<input
+					type="text"
+					className="border-[1px] border-slate-500 bg-slate-200 px-2"
+					defaultValue={skill}
+					onChange={editSkill}
+				/>
+			)}
+			<FontAwesomeIcon
+				icon={faTrash}
+				className="hover:text-red-400"
+				onClick={removeSkill}
+			/>
+			<FontAwesomeIcon
+				icon={faPenToSquare}
+				className={`hover:text-green-400 ${editing ? "text-green-400" : ""}`}
+				onClick={toggleEdit}
+			/>
 		</div>
 	);
 }

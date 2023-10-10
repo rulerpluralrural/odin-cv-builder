@@ -16,8 +16,8 @@ export default function App() {
 	const [skills, setSkills] = useState(["Photography", "Microsoft Word", "Microsoft Excel", "Problem Solving"])
 
 	return (
-		<div className="grid grid-cols-2">
-			<div>
+		<div className="grid grid-cols-[700px_1fr] gap-5 p-5 h-full">
+			<div className="bg-white shadow-[5px_5px_15px_5px] shadow-slate-400">
 				<Information
 					name={name}
 					setName={setName}
@@ -37,6 +37,7 @@ export default function App() {
 				phoneNumber={phoneNumber}
 				address={address}
 				profile={profile}
+				skills={skills}
 			/>
 		</div>
 	);
