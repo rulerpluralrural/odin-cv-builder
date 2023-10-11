@@ -107,7 +107,7 @@ export default function Skills({
 				</div>
 				<div className="flex justify-center items-center p-2">
 					<div
-						className="flex justify-around items-center w-10 h-10 border-2 border-gray-700 text-gray-700 rounded-full p-1 cursor-pointer hover:bg-green-300 transition-all "
+						className="flex justify-around items-center w-10 h-10 border-2 border-gray-700 text-gray-700 rounded-full p-1 cursor-pointer hover:bg-gray-300 transition-all "
 						onClick={toggleAddingSkill}
 					>
 						<FontAwesomeIcon icon={faPlus} />

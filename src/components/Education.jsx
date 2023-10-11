@@ -5,7 +5,14 @@ import {
 	faChevronDown,
 	faPenToSquare,
 	faTrash,
+	faPlus,
 } from "@fortawesome/free-solid-svg-icons";
+
+const buttonStyle =
+	"border-[1px] border-slate-400 rounded-md bg-slate-200 px-5 py-1 text-base hover:bg-slate-300 transition-colors focus:border-2 focus:border-blue-500 focus:bg-slate-300 outline-none";
+const inputStyle =
+	"w-full px-3 py-1 text-base border-[1px] border-slate-400 rounded-sm bg-slate-200 block focus:border-2 focus:border-blue-500 outline-none";
+
 /**@param {{currentOpenTab: string, setCurrentOpenTab: function, education: Array, setEducation: function}} props*/
 export default function Education({
 	currentOpenTab,
@@ -13,6 +20,8 @@ export default function Education({
 	education,
 	setEducation,
 }) {
+	const [addingEducation, setAddingEducation] = useState(false);
+
 	const toggleTab = () => {
 		if (currentOpenTab === "education") {
 			setCurrentOpenTab("");
@@ -29,10 +38,20 @@ export default function Education({
 		};
 	};
 
-    const editItem = (index) => {
-        return (editedItem) => {
-            education[index] = editedItem
-            setEducation([...education])
+	const editItem = (index) => {
+		return (editedItem) => {
+			education[index] = editedItem;
+			setEducation([...education]);
+		};
+	};
+
+	const toggleAddingItem = () => {
+		setAddingEducation(!addingEducation);
+	};
+
+    const addItem = () => {
+        return (newItem) => {
+            setEducation([...education, newItem])
         }
     }
 
@@ -56,6 +75,13 @@ export default function Education({
 					onClick={toggleTab}
 				/>
 			</div>
+			{!addingEducation && (
+				<NewInput
+					addingEducation={addingEducation}
+					setAddingEducation={setAddingEducation}
+                    addItem={addItem()}
+				/>
+			)}
 			<div
 				className={`${
 					currentOpenTab === "education" ? "max-h-[800px]" : "max-h-[0]"
@@ -68,23 +94,26 @@ export default function Education({
 							index={index}
 							school={item.school}
 							degree={item.degree}
-                            location={item.location}
+							location={item.location}
 							start={item.start}
 							end={item.end}
 							removeItem={removeItem(index)}
-                            editItem={editItem(index)}
+							editItem={editItem(index)}
 						/>
 					);
 				})}
+				<div
+					className="flex justify-around items-center w-10 h-10 border-2 border-gray-700 text-gray-700 rounded-full p-1 cursor-pointer hover:bg-gray-300 transition-all "
+					onClick={toggleAddingItem}
+				>
+					<FontAwesomeIcon icon={faPlus} />
+				</div>
 			</div>
+
+			<div className="flex justify-center items-center p-2"></div>
 		</div>
 	);
 }
-
-const buttonStyle =
-	"border-[1px] border-slate-400 rounded-md bg-slate-200 px-5 py-1 text-base hover:bg-slate-300 transition-colors focus:border-2 focus:border-blue-500 focus:bg-slate-300 outline-none";
-const inputStyle =
-	"w-full px-3 py-1 text-base border-[1px] border-slate-400 rounded-sm bg-slate-200 block focus:border-2 focus:border-blue-500 outline-none";
 
 function Element(props) {
 	const [editing, setEditing] = useState(false);
@@ -93,44 +122,44 @@ function Element(props) {
 		degree: props.degree,
 		start: props.start,
 		end: props.end,
-        location: props.location
+		location: props.location,
 	});
 
 	const toggleEdit = () => {
 		setEditing(!editing);
 	};
 
-    const editSchool = (e) => {
-        setEditedItem({...editedItem, school: e.target.value})
-    }
+	const editSchool = (e) => {
+		setEditedItem({ ...editedItem, school: e.target.value });
+	};
 
-    const editDegree = (e) => {
-        setEditedItem({...editedItem, degree: e.target.value})
-    }
+	const editDegree = (e) => {
+		setEditedItem({ ...editedItem, degree: e.target.value });
+	};
 
-    const editStartDate = (e) => {
-        setEditedItem({...editedItem, start: e.target.value})
-    }
+	const editStartDate = (e) => {
+		setEditedItem({ ...editedItem, start: e.target.value });
+	};
 
-    const editEndDate = (e) => {
-        setEditedItem({...editedItem, end: e.target.value})
-    }
+	const editEndDate = (e) => {
+		setEditedItem({ ...editedItem, end: e.target.value });
+	};
 
-    const editLocation = (e) => {
-        setEditedItem({...editedItem, location: e.target.value})
-    }
+	const editLocation = (e) => {
+		setEditedItem({ ...editedItem, location: e.target.value });
+	};
 
-    const saveEdit = () => {
-        props.editItem(editedItem)
-        setEditing(!editing)
-    }
+	const saveEdit = () => {
+		props.editItem(editedItem);
+		setEditing(!editing);
+	};
 
-    const cancelEdit = () => {
-        setEditing(!editing)
-    }
+	const cancelEdit = () => {
+		setEditing(!editing);
+	};
 
 	return !editing ? (
-		<div className="flex justify-between px-5 w-8/12 items-center p-2 border-[1px] border-slate-400 rounded-sm bg-slate-300 text-lg">
+		<div className="flex justify-between px-5 w-8/12 items-center p-2 border-2 border-slate-400 rounded-sm bg-slate-300 text-lg">
 			<h1 className="font-medium">{props.school}</h1>{" "}
 			<div className="flex gap-3 items-center p-1 rounded-md">
 				<FontAwesomeIcon
@@ -146,8 +175,8 @@ function Element(props) {
 			</div>
 		</div>
 	) : (
-		<div className="w-full mb-5">
-			<div className="flex flex-col items-start justify-around px-3 gap-4">
+		<div className="w-full">
+			<div className="flex flex-col items-start justify-around p-5 gap-4 border-[1px] border-slate-500 rounded-sm">
 				<div className="w-full">
 					<label htmlFor="school" className="inline-block">
 						School:
@@ -170,7 +199,7 @@ function Element(props) {
 						onChange={editDegree}
 					/>
 				</div>
-                <div className="w-full">
+				<div className="w-full">
 					<label htmlFor="degree" className="inline-block">
 						Location:
 					</label>
@@ -219,6 +248,126 @@ function Element(props) {
 							Cancel
 						</button>
 						<button className={buttonStyle} onClick={saveEdit}>
+							Save
+						</button>
+					</div>
+				</div>
+			</div>
+		</div>
+	);
+}
+
+function NewInput(props) {
+	const [newItem, setNewItem] = useState({
+		school: "",
+		degree: "",
+		start: "",
+		end: "",
+		location: "",
+	});
+
+	const newSchool = (e) => {
+		setNewItem({ ...newItem, school: e.target.value });
+	};
+
+	const newDegree = (e) => {
+		setNewItem({ ...newItem, degree: e.target.value });
+	};
+
+	const newStartDate = (e) => {
+		setNewItem({ ...newItem, start: e.target.value });
+	};
+
+	const newEndDate = (e) => {
+		setNewItem({ ...newItem, end: e.target.value });
+	};
+
+	const newLocation = (e) => {
+		setNewItem({ ...newItem, location: e.target.value });
+	};
+
+	const saveNewInput = () => {
+		props.addItem(newItem);
+		props.setAddingEducation(!props.addingEducation);
+	};
+
+	const cancelNewInput = () => {
+		props.setAddingEducation(!props.addingEducation);
+	};
+	return (
+		<div className="w-full mt-3">
+			<div className="flex flex-col items-start justify-around p-5 gap-4 border-[1px] border-slate-500 rounded-sm">
+				<div className="w-full">
+					<label htmlFor="school" className="inline-block">
+						School:
+					</label>
+					<input
+						type="text"
+						defaultValue={newItem.school}
+						className={inputStyle}
+						onChange={newSchool}
+					/>
+				</div>
+				<div className="w-full">
+					<label htmlFor="degree" className="inline-block">
+						Degree/Field:
+					</label>
+					<input
+						type="text"
+						defaultValue={newItem.degree}
+						className={inputStyle}
+						onChange={newDegree}
+					/>
+				</div>
+				<div className="w-full">
+					<label htmlFor="degree" className="inline-block">
+						Location:
+					</label>
+					<input
+						type="text"
+						defaultValue={newItem.location}
+						className={inputStyle}
+						onChange={newLocation}
+					/>
+				</div>
+				<div className="flex justify-between items-center w-full">
+					<div>
+						<label htmlFor="degree" className="inline-block">
+							Start Date:
+						</label>
+						<input
+							type="date"
+							defaultValue={newItem.start}
+							className={inputStyle}
+							onChange={newStartDate}
+						/>
+					</div>
+					<div className=" self-end">
+						<label htmlFor="degree" className="inline-block">
+							End Date:
+						</label>
+						<input
+							id="degree"
+							type="date"
+							defaultValue={newItem.end}
+							className={`${inputStyle} w-[175px]`}
+							onChange={newEndDate}
+						/>
+					</div>
+				</div>
+				<div className="flex justify-between w-full">
+					<button
+						className={`flex gap-2 items-center ${buttonStyle} `}
+						onClick={props.removeItem}
+					>
+						<FontAwesomeIcon icon={faTrash} />
+						<span>Delete</span>
+					</button>
+					<div className="flex gap-4 justify-center items-center">
+						<button className={buttonStyle} onClick={cancelNewInput}>
+							Cancel
+						</button>
+						<button className={buttonStyle} onClick={saveNewInput}>
 							Save
 						</button>
 					</div>

@@ -40,8 +40,8 @@ export default function App() {
 	
 
 	return (
-		<div className="grid grid-cols-[700px_1fr] gap-5 p-5 h-full">
-			<div className="bg-white shadow-[5px_5px_15px_5px] shadow-slate-400">
+		<div className="grid grid-cols-[700px_1fr] gap-5 p-5">
+			<div className="bg-white shadow-[5px_5px_15px_5px] shadow-slate-400 h-full pb-10">
 				<Information
 					name={name}
 					setName={setName}
@@ -71,7 +71,8 @@ export default function App() {
 					setEducation={setEducation}
 				/>
 			</div>
-			<Resume
+			<div>
+				<Resume
 				name={name}
 				email={email}
 				phoneNumber={phoneNumber}
@@ -80,6 +81,8 @@ export default function App() {
 				skills={skills}
 				education={education}
 			/>
+			</div>
+			
 		</div>
 	);
 }
