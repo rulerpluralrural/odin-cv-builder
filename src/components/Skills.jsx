@@ -8,9 +8,13 @@ import {
 	faPlus,
 	faCircleChevronRight,
 } from "@fortawesome/free-solid-svg-icons";
-/**@param {{skills: array, setSkills: function}} props*/
-export default function Skills({ skills, setSkills }) {
-	const [openSkills, setOpenSkills] = useState(false);
+/**@param {{skills: array, setSkills: function, currentOpenTab: string, setCurrentOpenTab: function}} props*/
+export default function Skills({
+	skills,
+	setSkills,
+	currentOpenTab,
+	setCurrentOpenTab,
+}) {
 	const [addingSkill, setAddingSkill] = useState(false);
 	const [newSkill, setNewSkill] = useState("");
 
@@ -41,32 +45,38 @@ export default function Skills({ skills, setSkills }) {
 		setAddingSkill(!addingSkill);
 	};
 
-	const toggleSkills = () => {
-		setOpenSkills(!openSkills);
+	const toggleTab = () => {
+		if (currentOpenTab === "skills") {
+			setCurrentOpenTab("");
+		} else {
+			setCurrentOpenTab("skills");
+		}
 	};
 
 	return (
-		<div className="p-4">
-			<div className=" w-full bg-slate-900 text-white px-5 py-3 font-bold text-2xl flex justify-between items-center mb-3">
+		<div className="p-4 pt-0">
+			<div className=" w-full bg-slate-900 text-white px-5 py-3 font-bold text-2xl flex justify-between items-center">
 				<h1
-					className={`${openSkills ? "text-yellow-400" : ""} transition-colors`}
+					className={`${
+						currentOpenTab === "skills" ? "text-yellow-400" : ""
+					} transition-colors`}
 				>
 					Skills
 				</h1>
 				<FontAwesomeIcon
 					icon={faChevronDown}
 					className={`cursor-pointer ${
-						openSkills ? "rotate-[-90deg] text-yellow-400" : ""
+						currentOpenTab === "skills" ? "rotate-[-90deg] text-yellow-400" : ""
 					} transition-all`}
-					onClick={toggleSkills}
+					onClick={toggleTab}
 				/>
 			</div>
 			<div
 				className={`${
-					openSkills ? "max-h-[400px]" : "max-h-[0]"
+					currentOpenTab === "skills" ? "max-h-[400px]" : "max-h-[0]"
 				} transition-[max-height] duration-500 ease-in-out overflow-hidden`}
 			>
-				<div className="flex flex-wrap gap-2">
+				<div className="flex flex-wrap gap-2 mt-3">
 					{skills.map((skill, index) => {
 						return (
 							<Skill

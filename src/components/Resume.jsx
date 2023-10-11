@@ -18,7 +18,7 @@ export default function Resume({
 	skills,
 }) {
 	return (
-		<div className="bg-white shadow-[5px_5px_15px_5px] shadow-slate-400">
+		<div className="bg-white shadow-[5px_5px_15px_5px] shadow-slate-400 h-screen">
 			<div className="bg-black text-white h-50 text-center py-10">
 				<div>
 					<h3 className=" text-center text-1xl">Curriculum Vitae</h3>
@@ -29,7 +29,7 @@ export default function Resume({
 				<div className="p-3 text-1xl flex flex-col justify-evenly gap-8 ">
 					<div>
 						<h1 className={`${header}`}>Profile</h1>
-						<p className="p-3 text-lg break-words">{profile}</p>
+						<p className="p-3 text-lg break-words break-all">{profile}</p>
 					</div>
 					<div>
 						<h1 className={`${header}`}>Contact</h1>
