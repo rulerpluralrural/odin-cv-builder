@@ -73,7 +73,7 @@ export default function Skills({
 			</div>
 			<div
 				className={`${
-					currentOpenTab === "skills" ? "max-h-[400px]" : "max-h-[0]"
+					currentOpenTab === "skills" ? "max-h-[700px]" : "max-h-[0]"
 				} transition-[max-height] duration-500 ease-in-out overflow-hidden`}
 			>
 				<div className="flex flex-wrap gap-2 mt-3">
