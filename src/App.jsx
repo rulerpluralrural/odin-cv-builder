@@ -5,6 +5,7 @@ import Resume from "./components/Resume";
 import Profile from "./components/Profile";
 import Skills from "./components/Skills";
 import Education from "./components/Education";
+import Experience from "./components/Experience";
 
 export default function App() {
 	const [name, setName] = useState("John Smith");
@@ -37,7 +38,22 @@ export default function App() {
 			end: "2002-07-11"
 		}
 	])
-	
+	const [experience, setExperience] = useState([
+		{
+			company: "Example Company",
+			position: "Floor Manager",
+			start: "2002-08-05",
+			end: "2003-08-15",
+			description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec dui enim, bibendum a nulla in, condimentum placerat massa. Nullam a congue elit. Aenean erat lectus, interdum vitae massa vel, pulvinar rhoncus ipsum."
+		},
+		{
+			company: "Test Company",
+			position: "Research Manager",
+			start: "2002-08-25",
+			end: "2008-11-26",
+			description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec dui enim, bibendum a nulla in, condimentum placerat massa. Nullam a congue elit. Aenean erat lectus, interdum vitae massa vel, pulvinar rhoncus ipsum."
+		}
+	])
 
 	return (
 		<div className="grid grid-cols-[700px_1fr] gap-5 p-5">
@@ -70,6 +86,12 @@ export default function App() {
 					education={education}
 					setEducation={setEducation}
 				/>
+				<Experience
+					experience={experience}
+					setExperience={setExperience}
+					currentOpenTab={currentOpenTab}
+					setCurrentOpenTab={setCurrentOpenTab}
+					/>
 			</div>
 			<div>
 				<Resume
@@ -80,6 +102,7 @@ export default function App() {
 				profile={profile}
 				skills={skills}
 				education={education}
+				experience={experience}
 			/>
 			</div>
 			

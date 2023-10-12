@@ -36,9 +36,9 @@ export default function Skills({
 	};
 
 	const addSkill = () => {
-		if (newSkill !== "") skills.push(newSkill);
-		setNewSkill("");
+		if (newSkill !== "") setSkills([...skills, newSkill]);	
 		setAddingSkill(false);
+		setNewSkill("")
 	};
 
 	const toggleAddingSkill = () => {

@@ -13,45 +13,45 @@ const buttonStyle =
 const inputStyle =
 	"w-full px-3 py-1 text-base border-[1px] border-slate-400 rounded-sm bg-slate-200 block focus:border-2 focus:border-blue-500 outline-none";
 
-/**@param {{currentOpenTab: string, setCurrentOpenTab: function, education: Array, setEducation: function}} props*/
-export default function Education({
+/**@param {{currentOpenTab: string, setCurrentOpenTab: function, experience: Array, setExperience: function}} props*/
+export default function Experience({
 	currentOpenTab,
 	setCurrentOpenTab,
-	education,
-	setEducation,
+	experience,
+	setExperience,
 }) {
-	const [addingEducation, setAddingEducation] = useState(true);
+	const [addingExperience, setAddingExperience] = useState(true);
 
 	const toggleTab = () => {
-		if (currentOpenTab === "education") {
+		if (currentOpenTab === "experience") {
 			setCurrentOpenTab("");
 		} else {
-			setCurrentOpenTab("education");
+			setCurrentOpenTab("experience");
 		}
 	};
 
 	const removeItem = (index) => {
 		return () => {
-			setEducation(
-				education.slice(0, index).concat(education.slice(index + 1))
+			setExperience(
+				experience.slice(0, index).concat(experience.slice(index + 1))
 			);
 		};
 	};
 
 	const editItem = (index) => {
 		return (editedItem) => {
-			education[index] = editedItem;
-			setEducation([...education]);
+			experience[index] = editedItem;
+			setExperience([...experience]);
 		};
 	};
 
 	const toggleAddingItem = () => {
-		setAddingEducation(!addingEducation);
+		setAddingExperience(!addingExperience);
 	};
 
 	const addItem = () => {
 		return (newItem) => {
-			setEducation([...education, newItem]);
+			setExperience([...experience, newItem]);
 		};
 	};
 
@@ -60,15 +60,15 @@ export default function Education({
 			<div className="flex justify-between items-center w-full bg-slate-900 text-white px-5 py-3 font-bold text-2xl">
 				<h1
 					className={`${
-						currentOpenTab === "education" ? "text-yellow-300" : ""
+						currentOpenTab === "experience" ? "text-yellow-300" : ""
 					} transition-colors`}
 				>
-					Education
+					Work Experience
 				</h1>
 				<FontAwesomeIcon
 					icon={faChevronDown}
 					className={`cursor-pointer ${
-						currentOpenTab === "education"
+						currentOpenTab === "experience"
 							? "rotate-[-90deg] text-yellow-300"
 							: ""
 					} transition-all`}
@@ -77,25 +77,25 @@ export default function Education({
 			</div>
 			<div
 				className={`${
-					currentOpenTab === "education" ? "max-h-[800px]" : "max-h-[0]"
+					currentOpenTab === "experience" ? "max-h-[800px]" : "max-h-[0]"
 				} transition-[max-height] duration-500 ease-in-out overflow-hidden flex flex-col items-center gap-2`}
 			>
 				<div className="mt-4 w-full flex flex-col justify-center items-center gap-3">
-					{!addingEducation && (
+					{!addingExperience && (
 						<NewInput
-							addingEducation={addingEducation}
-							setAddingEducation={setAddingEducation}
+							addingExperience={addingExperience}
+							setAddingExperience={setAddingExperience}
 							addItem={addItem()}
 						/>
 					)}
-					{education.map((item, index) => {
+					{experience.map((item, index) => {
 						return (
 							<Element
 								key={index}
 								index={index}
-								school={item.school}
-								degree={item.degree}
-								location={item.location}
+								company={item.company}
+								position={item.position}
+								description={item.description}
 								start={item.start}
 								end={item.end}
 								removeItem={removeItem(index)}
@@ -115,28 +115,28 @@ export default function Education({
 	);
 }
 
-// for editing existing object in education array
+// for editing existing object in experience array
 
 function Element(props) {
 	const [editing, setEditing] = useState(false);
 	const [editedItem, setEditedItem] = useState({
-		school: props.school,
-		degree: props.degree,
+		company: props.company,
+		position: props.position,
 		start: props.start,
 		end: props.end,
-		location: props.location,
+		description: props.description,
 	});
 
 	const toggleEdit = () => {
 		setEditing(!editing);
 	};
 
-	const editSchool = (e) => {
-		setEditedItem({ ...editedItem, school: e.target.value });
+	const editCompany = (e) => {
+		setEditedItem({ ...editedItem, company: e.target.value });
 	};
 
-	const editDegree = (e) => {
-		setEditedItem({ ...editedItem, degree: e.target.value });
+	const editPosition = (e) => {
+		setEditedItem({ ...editedItem, position: e.target.value });
 	};
 
 	const editStartDate = (e) => {
@@ -147,8 +147,8 @@ function Element(props) {
 		setEditedItem({ ...editedItem, end: e.target.value });
 	};
 
-	const editLocation = (e) => {
-		setEditedItem({ ...editedItem, location: e.target.value });
+	const editDescription = (e) => {
+		setEditedItem({ ...editedItem, description: e.target.value });
 	};
 
 	const saveEdit = () => {
@@ -162,7 +162,7 @@ function Element(props) {
 
 	return !editing ? (
 		<div className="flex justify-between px-5 w-8/12 items-center p-2 border-2 border-slate-400 rounded-sm bg-slate-300 text-lg">
-			<h1 className="font-medium">{props.school}</h1>{" "}
+			<h1 className="font-medium">{props.company}</h1>{" "}
 			<div className="flex gap-3 items-center p-1 rounded-md">
 				<FontAwesomeIcon
 					icon={faTrash}
@@ -181,35 +181,34 @@ function Element(props) {
 			<div className="flex flex-col items-start justify-around p-5 gap-4 border-[1px] border-slate-500 rounded-sm">
 				<div className="w-full">
 					<label htmlFor="school" className="inline-block">
-						School:
+						Company/Workplace:
 					</label>
 					<input
 						type="text"
-						defaultValue={props.school}
+						defaultValue={props.company}
 						className={inputStyle}
-						onChange={editSchool}
+						onChange={editCompany}
 					/>
 				</div>
 				<div className="w-full">
 					<label htmlFor="degree" className="inline-block">
-						Degree/Field:
+						Position:
 					</label>
 					<input
 						type="text"
-						defaultValue={props.degree}
+						defaultValue={props.position}
 						className={inputStyle}
-						onChange={editDegree}
+						onChange={editPosition}
 					/>
 				</div>
 				<div className="w-full">
 					<label htmlFor="degree" className="inline-block">
-						Location:
+						Description/Achivements:
 					</label>
-					<input
-						type="text"
-						defaultValue={props.location}
-						className={inputStyle}
-						onChange={editLocation}
+					<textarea
+						defaultValue={props.description}
+						className={`${inputStyle} h-28 py-2`}
+						onChange={editDescription}
 					/>
 				</div>
 				<div className="flex justify-between items-center w-full">
@@ -259,23 +258,23 @@ function Element(props) {
 	);
 }
 
-// for adding new object in education array
+// for adding new object in experience array
 
 function NewInput(props) {
 	const [newItem, setNewItem] = useState({
-		school: "",
-		degree: "",
+		company: "",
+		position: "",
 		start: "",
 		end: "",
-		location: "",
+		description: "",
 	});
 
-	const newSchool = (e) => {
-		setNewItem({ ...newItem, school: e.target.value });
+	const newCompany = (e) => {
+		setNewItem({ ...newItem, company: e.target.value });
 	};
 
-	const newDegree = (e) => {
-		setNewItem({ ...newItem, degree: e.target.value });
+	const newPosition = (e) => {
+		setNewItem({ ...newItem, position: e.target.value });
 	};
 
 	const newStartDate = (e) => {
@@ -286,52 +285,51 @@ function NewInput(props) {
 		setNewItem({ ...newItem, end: e.target.value });
 	};
 
-	const newLocation = (e) => {
-		setNewItem({ ...newItem, location: e.target.value });
+	const newDescription = (e) => {
+		setNewItem({ ...newItem, description: e.target.value });
 	};
 
 	const saveNewInput = () => {
 		props.addItem(newItem);
-		props.setAddingEducation(!props.addingEducation);
+		props.setAddingExperience(!props.addingExperience);
 	};
 
 	const cancelNewInput = () => {
-		props.setAddingEducation(!props.addingEducation);
+		props.setAddingExperience(!props.addingExperience);
 	};
 	return (
 		<div className="w-full mt-3">
 			<div className="flex flex-col items-start justify-around p-5 gap-4 border-[1px] border-slate-500 rounded-sm">
 				<div className="w-full">
 					<label htmlFor="school" className="inline-block">
-						School:
+						Company:
 					</label>
 					<input
 						type="text"
-						defaultValue={newItem.school}
+						defaultValue={newItem.company}
 						className={inputStyle}
-						onChange={newSchool}
+						onChange={newCompany}
 					/>
 				</div>
 				<div className="w-full">
 					<label htmlFor="degree" className="inline-block">
-						Degree/Field:
+						Position:
 					</label>
 					<input
 						type="text"
-						defaultValue={newItem.degree}
+						defaultValue={newItem.position}
 						className={inputStyle}
-						onChange={newDegree}
+						onChange={newPosition}
 					/>
 				</div>
 				<div className="w-full">
 					<label htmlFor="degree" className="inline-block">
-						Location:
+						Description/Achivements:
 					</label>
-					<input
-						type="text"
-						defaultValue={newItem.location}
-						className={inputStyle}
-						onChange={newLocation}
+					<textarea
+						defaultValue={newItem.description}
+						className={`${inputStyle} h-28 py-2`}
+						onChange={newDescription}
 					/>
 				</div>
 				<div className="flex justify-between items-center w-full">
